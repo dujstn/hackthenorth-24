@@ -5,6 +5,7 @@ import { NdefTools } from 'react-native-nfc-sdk';
 
 let session;
 const ndef = new NdefTools();
+const hce = new HceTools();
 
 NfcManager.start().then(() => {
 	console.log("NFC started");
