@@ -1,0 +1,41 @@
+name: build-android
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/iron
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: "17"
+        distribution: "temurin"
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Install npm packages
+      run: npm run setup
+
+    - name: Install expo-cli
+      run: npm install -g eas-cli
+
+    - name: Expo prebuild
+      run: npm run prebuild
+
+    - name: Build .apk
+      run: |
+        cd android
+        ./gradlew assembleDebug
