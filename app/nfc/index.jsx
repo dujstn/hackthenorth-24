@@ -7,22 +7,21 @@ NfcManager.start().then(() => {
 	console.warn("NFC failed to start", error);
 });
 
-const readNdef = () => {
-	NfcManager.setEventListener({
-	  onStateChange: (state) => {
-		if (state === 'stateChange' && state === 'STATE_ON') {
-		  NfcManager.requestTechnology(NfcManager.NFC_TECHNLOGY.NFC_A)
-			.then(() => NfcManager.getTag())
-			.then(tag => {
-			  const message = tag.ndefMessage[0].payload;
-			  console.log('Received NFC data:', NfcManager.ndef.textDecoder(message));
-			})
-			.catch(err => console.warn('Error reading NFC tag:', err))
-			.finally(() => NfcManager.cancelTechnologyRequest());
-		}
+async function readNdef(){
+	console.log("Testing...");
+    try {
+		// register for the NFC tag with NDEF in it
+		await NfcManager.requestTechnology(NfcTech.Ndef);
+		// the resolved tag object will contain `ndefMessage` property
+		const tag = await NfcManager.getTag();
+		console.warn('Tag found', tag);
+	  } catch (ex) {
+		console.warn('Oops!', ex);
+	  } finally {
+		// stop the nfc scanning
+		NfcManager.cancelTechnologyRequest();
 	  }
-	});
-  };
+}
 
 async function readNdef_old(){
 	// console.log("Testing...");
@@ -46,8 +45,11 @@ async function writeNdef(value){
 	let result = false;
 
 	try {
-		await NfcManager.requestTechnology(NfcTech.NfcA);
-		await NfcManager.transceive(Ndef.encodeMessage([Ndef.uriRecord(value)]));
+		await NfcManager.requestTechnology(NfcTech.Ndef);
+		const payload = Ndef.encodeMessage([Ndef.uriRecord(value)]);
+		if (payload) {
+			await NfcManager.ndefHandler.writeNdefMessage(payload);
+		}
 	} catch (e) {
 		console.log('Could not write.', e);
 	} finally {
@@ -67,7 +69,7 @@ export default function Index(){
 					Scan a tag
 				</Text>
 			</TouchableOpacity>
-			<TouchableOpacity onPress={() => {writeNdef("Hello World")}} style={styles.writeNFC}>
+			<TouchableOpacity onPress={() => {writeNdef("https://google.com")}} style={styles.writeNFC}>
 				<Text>
 					Write a tag
 				</Text>
