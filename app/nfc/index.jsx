@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import NfcManager, {Ndef, nfcManager, NfcTech} from 'react-native-nfc-manager';
-import { readNFCTag } from "./adapter";
+import { readNFCTag, writeNFCTag } from "./adapter";
 
 NfcManager.start();
 
