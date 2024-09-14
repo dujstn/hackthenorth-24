@@ -8,57 +8,30 @@ NfcManager.start().then(() => {
 });
 
 async function readNdef(){
-	console.log("Testing...");
     try {
-		// register for the NFC tag with NDEF in it
-		await NfcManager.requestTechnology(NfcTech.Ndef);
-		// the resolved tag object will contain `ndefMessage` property
+		await NfcManager.requestTechnology([NfcTech.NfcA, NfcTech.Ndef]);
 		const tag = await NfcManager.getTag();
-		console.warn('Tag found', tag);
-	  } catch (ex) {
-		console.warn('Oops!', ex);
+		console.warn('Tag found', { tag });
+	  } catch (e) {
+		console.warn('Read failed', { e });
 	  } finally {
-		// stop the nfc scanning
-		NfcManager.cancelTechnologyRequest();
+		await NfcManager.cancelTechnologyRequest();
 	  }
 }
 
-async function readNdef_old(){
-	// console.log("Testing...");
-    // try {
-	// 	// register for the NFC tag with NDEF in it
-	// 	await NfcManager.requestTechnology(NfcTech.NfcA);
-	// 	// the resolved tag object will contain `ndefMessage` property
-	// 	// const tag1 = await NfcManager.ndefHandler.getNdefMessage();
-	// 	// const tag2 = await NfcManager.getTag();
-	// 	const tag3 = await NfcManager.getNdefMessage();
-	// 	console.warn('Tag found', { tag1, tag2, tag3 });
-	//   } catch (ex) {
-	// 	console.warn('Oops!', ex);
-	//   } finally {
-	// 	// stop the nfc scanning
-	// 	NfcManager.cancelTechnologyRequest();
-	//   }
-}
-
 async function writeNdef(value){
-	let result = false;
-
 	try {
-		await NfcManager.requestTechnology(NfcTech.Ndef);
-		const payload = Ndef.encodeMessage([Ndef.uriRecord(value)]);
-		if (payload) {
-			await NfcManager.ndefHandler.writeNdefMessage(payload);
+		const tech = await NfcManager.requestTechnology([NfcTech.NfcA, NfcTech.Ndef]);
+		const handler = tech == NfcTech.Ndef ? NfcManager.ndefHandler : NfcManager.nfcAHandler;
+		const bytes = Ndef.encodeMessage([Ndef.textRecord(value)]);
+		if (bytes) {
+			(tech == NfcTech.Ndef ? handler.writeNdefMessage : handler.transceive)(bytes);
 		}
 	} catch (e) {
-		console.log('Could not write.', e);
+		console.warn('Write failed', e);
 	} finally {
-		NfcManager.cancelTechnologyRequest();
+		await NfcManager.cancelTechnologyRequest();
 	}
-}
-
-function buildPayload(value){
-	return Ndef.encodeMessage([Ndef.uriRecord(value)])
 }
 
 export default function Index(){
