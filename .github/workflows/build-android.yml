@@ -1,5 +1,8 @@
 name: build-android
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -34,9 +37,6 @@ jobs:
 
     - name: Expo prebuild
       run: npm run prebuild
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
 
     - name: Build .apk
       run: |
