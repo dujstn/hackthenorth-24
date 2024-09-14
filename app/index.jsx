@@ -1,23 +1,28 @@
-import {StyleSheet, Text, View} from "react-native";
+import {Auth0Provider} from 'react-native-auth0';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from '../screens/HomeScreen';
+import LoginScreen from '../screens/LoginScreen';
+import config from '../auth0-configuration'
 
-export default function Index(){
-	return (
-	<View style={styles.container}>
-		<Text style={styles.header}>
-			I love HTN 2024 
-		</Text>
-	</View>
-	);
+const Stack = createStackNavigator();
+
+export default function App() {
+  return (
+    <Auth0Provider domain={config.domain}
+                   clientId={config.clientId}>
+      <AppNavigator/>
+    </Auth0Provider>
+  );
 }
 
-const styles = StyleSheet.create({
-	container:{
-		flex: 1,
-		justifyContent: "center",
-		alignItems : "center",
-	},
-	header: {
-		fontSize: 32,
-		color: "blue",
-	}
-})
+function AppNavigator() {
+  return (
+    <NavigationContainer independent={true}>
+      <Stack.Navigator>
+        <Stack.Screen name="Login" component={LoginScreen}/>
+        <Stack.Screen name="Home" component={HomeScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
