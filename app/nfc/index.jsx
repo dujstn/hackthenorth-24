@@ -1,5 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import NfcManager, {Ndef, NfcTech} from 'react-native-nfc-manager';
+import { HCESession, NFCTagType4NDEFContentType, NFCTagType4 } from 'react-native-hce';
+import { NdefTools } from 'react-native-nfc-sdk';
+
+let session;
+const ndef = new NdefTools();
 
 NfcManager.start().then(() => {
 	console.log("NFC started");
@@ -8,30 +13,50 @@ NfcManager.start().then(() => {
 });
 
 async function readNdef(){
-    try {
-		await NfcManager.requestTechnology([NfcTech.NfcA, NfcTech.Ndef]);
-		const tag = await NfcManager.getTag();
-		console.warn('Tag found', { tag, payload: tag?.ndefMessage });
-	  } catch (e) {
-		console.warn('Read failed', { e });
-	  } finally {
-		await NfcManager.cancelTechnologyRequest();
-	  }
+    const readTag = async () => {
+        // The read tag function sets an event handler for when a tag
+        // is read and returns a js object of
+        // {id: 'nfc-id', content: 'decoded-payload'}
+        try {
+          const tag = await ndef.readTag();
+          if (tag) console.log("Got tag", tag.content);   
+        } catch (err) {
+          console.err(err);
+        } 
+        ndef.cancelRequest(); // Cancel the request to the nfc hardware
+    }
+	console.log(await readTag());
 }
 
+const startSession = async () => {
+	const tag = new NFCTagType4({
+	  type: NFCTagType4NDEFContentType.Text,
+	  content: "Hello world",
+	  writable: false
+	});
+  
+	session = await HCESession.getInstance();
+	session.setApplication(tag);
+	await session.setEnabled(true);
+  }
+
+  
 async function writeNdef(value){
-	try {
-		const tech = await NfcManager.requestTechnology([NfcTech.NfcA, NfcTech.Ndef]);
-		const handler = tech == NfcTech.Ndef ? NfcManager.ndefHandler : NfcManager.nfcAHandler;
-		const bytes = Ndef.encodeMessage([Ndef.textRecord(value)]);
-		if (bytes) {
-			(tech == NfcTech.Ndef ? handler.writeNdefMessage : handler.transceive)(bytes);
-		}
-	} catch (e) {
-		console.warn('Write failed', e);
-	} finally {
-		await NfcManager.cancelTechnologyRequest();
-	}
+	const emulate = () => {
+        // The start emulation function receives a content, which
+        // corresponds to a NFC tag payload, and a writable boolean,
+        // which will define if the NFC card you emulate can be written
+        // The second parameter is a callback which will be called once
+        // your emulated tag is read
+        hce.startEmulation(
+          {content: 'Hello World!', writable: false},
+          () => {
+            console.log('Yes!');
+            setTimeout(() => console.log('No'), 15000);
+          }
+        )
+    }
+	emulate()
 }
 
 export default function Index(){
