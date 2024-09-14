@@ -31,7 +31,7 @@ async function writeNdef(value){
 		await NfcManager.requestTechnology(NfcTech.Ndef);
 		const payload = Ndef.textRecord(value);//buildPayload(value);
 
-		await NfcManager.ndefHandler.writeNdefMessage(payload.payload);
+		await NfcManager.ndefHandler.writeNdefMessage(Ndef.encodeMessage([payload]));
 		console.log('success!' + payload);
 	} catch (e) {
 		console.log('Could not write.', e);
