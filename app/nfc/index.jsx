@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import NfcManager, {Ndef, NfcTech} from 'react-native-nfc-manager';
 import { HCESession, NFCTagType4NDEFContentType, NFCTagType4 } from 'react-native-hce';
-import { NdefTools } from 'react-native-nfc-sdk';
+import { NdefTools, HceTools } from 'react-native-nfc-sdk';
 
 let session;
 const ndef = new NdefTools();
