@@ -11,7 +11,7 @@ async function readNdef(){
     try {
 		await NfcManager.requestTechnology([NfcTech.NfcA, NfcTech.Ndef]);
 		const tag = await NfcManager.getTag();
-		console.warn('Tag found', { tag });
+		console.warn('Tag found', { tag, payload: tag?.ndefMessage });
 	  } catch (e) {
 		console.warn('Read failed', { e });
 	  } finally {
