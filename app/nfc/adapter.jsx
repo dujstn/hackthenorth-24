@@ -1,28 +1,26 @@
-import NfcManager, { NfcTech } from "react-native-nfc-manager";
+import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
 
 export async function readNFCTag() {
-    NfcManager.setEventListener({
-        onStateChange: (state) => {
-            NfcManager.requestTechnology(NfcTech.NfcA).then(() => {
-                NfcManager.getTag().then((tag) => {
-                    const message = tag.ndefMessage[0].payload;
-                    console.log('Received NFC data:', NfcManager.nfcAHandler.textDecoder(message));
-                }).catch((err) => {
-                    console.log(err);
-                }).finally(() => {
-                    NfcManager.cancelTechnologyRequest();
-                });
+    NfcManager.setEventListener(NfcEvents.StateChanged, (state) => {
+        NfcManager.requestTechnology(NfcTech.Ndef).then(() => {
+            NfcManager.getTag().then((tag) => {
+                const message = tag.ndefMessage[0].payload;
+                console.log('Received NFC data:', Ndef.decodeMessage(message));
             }).catch((err) => {
                 console.log(err);
+            }).finally(() => {
+                NfcManager.cancelTechnologyRequest();
             });
-        }
-    })
+        }).catch((err) => {
+            console.log(err);
+        });
+    });
 };
 
 export async function writeNFCTag(text) {
     try {
-        await NfcManager.requestTechnology(NfcTech.NfcA);
-        await NfcManager.nfcAHandler.writeNdefMessage([NfcManager.nfcAHandler.textRecord(text)]);
+        await NfcManager.requestTechnology(NfcTech.Ndef);
+        await NfcManager.ndefHandler.writeNdefMessage([Ndef.textRecord(text)]);
         console.log('Successfully wrote to tag');
     } catch (ex) {
         console.warn('Error writing to tag', ex);

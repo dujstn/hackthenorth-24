@@ -12,6 +12,7 @@ async function readNdef(){
 		// the resolved tag object will contain `ndefMessage` property
 		const tag = await NfcManager.getTag();
 		console.warn('Tag found', tag);
+		console.log('Payload', tag.ndefMessage[0].payload);
 	  } catch (ex) {
 		console.warn('Oops!', ex);
 	  } finally {
