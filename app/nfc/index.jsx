@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import NfcManager, {Ndef, nfcManager, NfcTech} from 'react-native-nfc-manager';
+import { readNFCTag } from "./adapter";
 
 NfcManager.start();
 
@@ -29,7 +30,7 @@ async function writeNdef(value){
 		await NfcManager.ndefHandler.writeNdefMessage(payload);
 		console.log('success!' + payload);
 	} catch (e) {
-		console.log('Could not write.');
+		console.log('Could not write.', e);
 	} finally {
 		NfcManager.cancelTechnologyRequest();
 	}
@@ -42,12 +43,12 @@ function buildPayload(value){
 export default function Index(){
 	return(
 		<View style={styles.container}>
-			<TouchableOpacity onPress={readNdef} style={styles.readNFC}>
+			<TouchableOpacity onPress={readNFCTag} style={styles.readNFC}>
 				<Text>
 					Scan a tag
 				</Text>
 			</TouchableOpacity>
-			<TouchableOpacity onPress={() => {writeNdef("Hello World")}} style={styles.writeNFC}>
+			<TouchableOpacity onPress={() => {writeNFCTag("Hello World")}} style={styles.writeNFC}>
 				<Text>
 					Write a tag
 				</Text>
