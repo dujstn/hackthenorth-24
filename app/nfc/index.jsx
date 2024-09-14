@@ -11,9 +11,9 @@ async function readNdef(){
 	console.log("Testing...");
     try {
 		// register for the NFC tag with NDEF in it
-		await NfcManager.requestTechnology(NfcTech.Ndef);
+		await NfcManager.requestTechnology([NfcTech.Ndef, NfcTech.NfcA]);
 		// the resolved tag object will contain `ndefMessage` property
-		const tag = await NfcManager.getTag();
+		const tag = await NfcManager.ndefHandler.getNdefMessage();
 		console.warn('Tag found', { tag });
 	  } catch (ex) {
 		console.warn('Oops!', ex);
@@ -27,11 +27,9 @@ async function writeNdef(value){
 	let result = false;
 
 	try {
-		await NfcManager.requestTechnology(NfcTech.Ndef);
+		const nfcTech = await NfcManager.requestTechnology([NfcTech.Ndef, NfcTech.NfcA]);
 		const payload = buildPayload(value);
-
 		await NfcManager.ndefHandler.writeNdefMessage(payload);
-		console.log('success!' + payload);
 	} catch (e) {
 		console.log('Could not write.', e);
 	} finally {
@@ -75,4 +73,4 @@ const styles = StyleSheet.create({
 		padding: 3,
 		borderWidth: 3,
 	}
-})
+});
