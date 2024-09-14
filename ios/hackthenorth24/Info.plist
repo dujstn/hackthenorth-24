@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>myapp</string>
-          <string>com.anonymous.hackthenorth-24</string>
+          <string>com.doorkey.hackthenorth24</string>
         </array>
       </dict>
     </array>
