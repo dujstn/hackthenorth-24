@@ -7,22 +7,39 @@ NfcManager.start().then(() => {
 	console.warn("NFC failed to start", error);
 });
 
-async function readNdef(){
-	console.log("Testing...");
-    try {
-		// register for the NFC tag with NDEF in it
-		await NfcManager.requestTechnology(NfcTech.NfcA);
-		// the resolved tag object will contain `ndefMessage` property
-		const tag1 = await NfcManager.ndefHandler.getNdefMessage();
-		// const tag2 = await NfcManager.getTag();
-		// const tag3 = await NfcManager.getNdefMessage();
-		console.warn('Tag found', { tag1, tag2, tag3 });
-	  } catch (ex) {
-		console.warn('Oops!', ex);
-	  } finally {
-		// stop the nfc scanning
-		NfcManager.cancelTechnologyRequest();
+const readNdef = () => {
+	NfcManager.setEventListener({
+	  onStateChange: (state) => {
+		if (state === 'stateChange' && state === 'STATE_ON') {
+		  NfcManager.requestTechnology(NfcManager.NFC_TECHNLOGY.NFC_A)
+			.then(() => NfcManager.getTag())
+			.then(tag => {
+			  const message = tag.ndefMessage[0].payload;
+			  console.log('Received NFC data:', NfcManager.ndef.textDecoder(message));
+			})
+			.catch(err => console.warn('Error reading NFC tag:', err))
+			.finally(() => NfcManager.cancelTechnologyRequest());
+		}
 	  }
+	});
+  };
+
+async function readNdef_old(){
+	// console.log("Testing...");
+    // try {
+	// 	// register for the NFC tag with NDEF in it
+	// 	await NfcManager.requestTechnology(NfcTech.NfcA);
+	// 	// the resolved tag object will contain `ndefMessage` property
+	// 	// const tag1 = await NfcManager.ndefHandler.getNdefMessage();
+	// 	// const tag2 = await NfcManager.getTag();
+	// 	const tag3 = await NfcManager.getNdefMessage();
+	// 	console.warn('Tag found', { tag1, tag2, tag3 });
+	//   } catch (ex) {
+	// 	console.warn('Oops!', ex);
+	//   } finally {
+	// 	// stop the nfc scanning
+	// 	NfcManager.cancelTechnologyRequest();
+	//   }
 }
 
 async function writeNdef(value){
