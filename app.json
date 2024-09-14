@@ -33,7 +33,13 @@
     },
     "plugins": [
       "expo-router",
-      "react-native-nfc-manager"
+      "react-native-nfc-manager",
+      [
+        "react-native-auth0",
+        {
+          "domain": "dev-yot3m5q851hx5s4t.ca.auth0.com"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
