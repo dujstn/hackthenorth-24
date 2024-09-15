@@ -86,7 +86,7 @@ export default function ProfileScreen({ navigation }) {
         <TextInput label="Facebook" mode="outlined" style={styles.input} value={facebook} onChangeText={setFacebook} />
         <TextInput label="Twitter" mode="outlined" style={styles.input} value={twitter} onChangeText={setTwitter} />
 
-        <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.submit} onPress={ () => {handleSubmit(); navigation.navigate('Home')}}>
         <Text style={styles.submitText}>Submit</Text>
       </TouchableOpacity>
       </ScrollView>
