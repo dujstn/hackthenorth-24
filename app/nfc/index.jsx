@@ -4,23 +4,34 @@ import NfcManager, {Ndef, NfcTech} from 'react-native-nfc-manager';
 NfcManager.start().then(() => {
 	console.log("NFC started successfully");
 }).catch(e => {
-	// TODO: DISPLAY ERROR MESSAGE
+	console.warn("NFC failed to start");
+	// TODO: DISPLAY ERROR MESSAGE IN GUI
 });
 
-async function writeNdef(url) {
+async function getUrl() {
+	return "https://duckduckgo.com";
+}
+
+async function writeNdef() {
+	const url = await getUrl();
+	let success = false;
 	try {
-		await NfcManager.requestTechnology(NfcTech.Ndef);
-		const bytes = Ndef.encodeMessage([Ndef.uriRecord(url)]);
-		if (bytes) {
-			await NfcManager.ndefHandler.writeNdefMessage(bytes);
-		} else {
-			throw new Error('Failed to encode NDEF');
+		const tech = await NfcManager.requestTechnology(NfcTech.Ndef);
+		if (tech != NfcTech.Ndef) {
+			throw new Error('Wrong NFC technology');
 		}
-	} catch (ex) {
-		console.warn('Oops!', ex);
+		const bytes = Ndef.encodeMessage([Ndef.uriRecord(url)]);
+		if (bytes.length) {
+			await NfcManager.ndefHandler.writeNdefMessage(bytes);
+			success = true;
+		} else {
+			throw new Error('Failed to encode NDEF (0 bytes)');
+		}
+	} catch (e) {
+		console.warn('An error occured!', e);
 	} finally {
-		console.log("Done!");
-		NfcManager.cancelTechnologyRequest();
+		await NfcManager.cancelTechnologyRequest();
+		return success;
 	}
 }
 
@@ -42,4 +53,4 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 	}
-})
+});
