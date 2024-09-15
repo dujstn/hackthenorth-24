@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#d9e7d6",
   },
   headerText: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
   },
   closeButton: {
