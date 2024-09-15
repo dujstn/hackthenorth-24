@@ -1,0 +1,62 @@
+name: build-android-2
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - noauth
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: noauth
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/iron
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: "17"
+        distribution: "temurin"
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Install npm packages
+      run: npm run setup
+
+    - name: Install expo-cli
+      run: npm install -g eas-cli
+
+    - name: Expo prebuild
+      run: npm run prebuild
+
+    - name: Build .apk
+      run: |
+        cd android
+        ./gradlew assembleRelease
+
+    - name: Upload .apk
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-android-2
+        path: android/app/build/outputs/apk/release/app-release.apk
+        if-no-files-found: error
+        compression-level: 9
+
+    - name: Release .apk
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          android/app/build/outputs/apk/release/app-release.apk
+        tag_name: latest
+        make_latest: true
