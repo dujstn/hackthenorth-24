@@ -19,15 +19,17 @@ export default function HomeScreen({ navigation }) { // Add navigation prop
           <Text style={styles.createProfileText}>Create Profile</Text>
         </TouchableOpacity>
 
-      <View style={styles.profileContainer}>
+      <TouchableOpacity style={styles.profileContainer}
+      onPress={() => navigation.navigate('Sharing')} // Add navigation to SharingScreen
+      >
         <Text style={styles.profileText}>Profile 1</Text>
         <MaterialIcons name="edit" size={24} color="#015719" />
-      </View>
+      </TouchableOpacity>
 
-      <View style={styles.profileContainer2}>
+      <TouchableOpacity style={styles.profileContainer2}>
         <Text style={styles.profileText2}>Profile 2</Text>
         <MaterialIcons name="edit" size={24} color="#570B01" />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }
