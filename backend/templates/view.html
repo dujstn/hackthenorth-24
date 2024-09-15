@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{{ user["name"] }}</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+	<style>
+		*{
+			font-family:"Inter",sans-serif;
+			background-color:#f5f6f7;
+			color:#27273a;
+		}
+		body{
+			width:min(100vw,800px);
+			overflow-x:hidden;
+			margin:0 auto;
+			padding:32px;
+			box-sizing:border-box;
+		}
+		h1{
+			font-size:36px;
+			line-height:36px;
+		}
+		h2{
+			font-size:24px;
+			line-height:24px;
+			margin-top:24px;
+		}
+		p{
+			font-size:16px;
+			line-height:16px;
+		}
+		.social{
+			font-size:48px;
+			line-height:48px;
+			margin:0;
+		}
+	</style>
+</head>
+<body>
+	<h1>{{ user["name"] }}</h1>
+	{% if user["phone"] %}
+	<p>Phone: {{ user["phone"] }}</p>
+	{% endif %}
+	{% if user["email"] %}
+	<p>Email: <a href="mailto:{{ user['email'] }}">{{ user["email"] }}</a></p>
+	{% endif %}
+	{% if user["description"] %}
+	<h2>About</h2>
+	<p>{{ user["description"] }}</p>
+	{% endif %}
+	<h2>Socials</h2>
+	<div style="display:flex;gap:16px;">
+		{% if user["linkedin"] %}
+		<p class="social"><a href="https://www.linkedin.com/in/{{ user['linkedin'] }}"><i class="fa-brands fa-linkedin"></i></a></p>
+		{% endif %}
+		{% if user["instagram"] %}
+		<p class="social"><a href="https://instagram.com/{{ user['instagram'] }}"><i class="fa-brands fa-square-instagram"></i></a></p>	
+		{% endif %}
+		{% if user["github"] %}
+		<p class="social"><a href="https://github.com/{{ user['github'] }}"><i class="fa-brands fa-square-github"></i></a></p>
+		{% endif %}
+		{% if user["facebook"] %}
+		<p class="social"><a href="https://facebook.com/{{ user['facebook'] }}"><i class="fa-brands fa-square-facebook"></i></a></p>
+		{% endif %}
+		{% if user["twitter"] %}
+		<p class="social"><a href="https://twitter.com/{{ user['twitter'] }}"><i class="fa-brands fa-square-twitter"></i></a></p>
+		{% endif %}
+	</div>
+</body>
+</html>
