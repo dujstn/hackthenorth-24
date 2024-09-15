@@ -1,36 +1,85 @@
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, ScrollView, Button } from 'react-native';
 import { Text, TextInput, IconButton } from 'react-native-paper';
 
 export default function ProfileScreen({ navigation }) {
+  // State for each input field
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [description, setDescription] = useState('');
+  const [linkedIn, setLinkedIn] = useState('');
+  const [instagram, setInstagram] = useState('');
+  const [gitHub, setGitHub] = useState('');
+  const [facebook, setFacebook] = useState('');
+  const [twitter, setTwitter] = useState('');
+
+  // Function to handle form submission
+  const handleSubmit = async () => {
+    const formData = {
+      name,
+      phone,
+      email,
+      description,
+      linkedIn,
+      instagram,
+      gitHub,
+      facebook,
+      twitter
+    };
+
+    try {
+      const response = await fetch('https://jisecay129.pythonanywhere.com/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.text();
+        console.log("Success:", data);
+      } else {
+        console.error("Error:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Request failed", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Profile 1</Text>
-        <IconButton 
-          icon="close" 
-          size={24} 
-          onPress={() => navigation.goBack()} 
+        <IconButton
+          icon="close"
+          size={24}
+          onPress={() => navigation.goBack()}
           style={styles.closeButton}
         />
       </View>
 
       <ScrollView contentContainerStyle={styles.formContainer}>
-        <TextInput label="Name" mode="outlined" style={styles.input} />
-        <TextInput label="Phone Number" mode="outlined" style={styles.input} />
-        <TextInput label="Email" mode="outlined" style={styles.input} />
-        <TextInput 
-          label="Description" 
-          mode="outlined" 
-          multiline 
-          numberOfLines={4} 
-          style={[styles.input, { height: 100 }]} 
+        <TextInput label="Name" mode="outlined" style={styles.input} value={name} onChangeText={setName} />
+        <TextInput label="Phone Number" mode="outlined" style={styles.input} value={phone} onChangeText={setPhone} />
+        <TextInput label="Email" mode="outlined" style={styles.input} value={email} onChangeText={setEmail} />
+        <TextInput
+          label="Description"
+          mode="outlined"
+          multiline
+          numberOfLines={4}
+          style={[styles.input, { height: 100 }]}
+          value={description}
+          onChangeText={setDescription}
         />
-        <TextInput label="LinkedIn" mode="outlined" style={styles.input} />
-        <TextInput label="Instagram" mode="outlined" style={styles.input} />
-        <TextInput label="GitHub" mode="outlined" style={styles.input} />
-        <TextInput label="FaceBook" mode="outlined" style={styles.input} />
-        <TextInput label="Twitter" mode="outlined" style={styles.input} />
+        <TextInput label="LinkedIn" mode="outlined" style={styles.input} value={linkedIn} onChangeText={setLinkedIn} />
+        <TextInput label="Instagram" mode="outlined" style={styles.input} value={instagram} onChangeText={setInstagram} />
+        <TextInput label="GitHub" mode="outlined" style={styles.input} value={gitHub} onChangeText={setGitHub} />
+        <TextInput label="Facebook" mode="outlined" style={styles.input} value={facebook} onChangeText={setFacebook} />
+        <TextInput label="Twitter" mode="outlined" style={styles.input} value={twitter} onChangeText={setTwitter} />
+
+        <Button title="Submit" onPress={handleSubmit} />
       </ScrollView>
     </View>
   );
