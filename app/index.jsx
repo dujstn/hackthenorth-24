@@ -21,7 +21,7 @@ export default function App() {
 function AppNavigator() {
   return (
     <NavigationContainer independent={true}>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="NewProfile" component={NewProfileScreen}/>

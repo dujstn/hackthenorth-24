@@ -63,9 +63,9 @@ export default function SharingScreen({ navigation }) {
 
       {loading ? (
         <View style={styles.spinnerContainer}>
-          <ActivityIndicator animating={true} size={150} color="#7BAF9A" />
-          <Text style={styles.statusText}>Sharing Profile 1...</Text>
-        </View>
+		<ActivityIndicator animating={true} size={150} color="#7BAF9A" />
+		<Text style={{...styles.statusText, marginTop: 20}}>Sharing Profile 1...</Text>
+	  </View>
       ) : (
         error ? (
           <Text style={styles.errorText}>{error}</Text>
@@ -103,10 +103,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "red",
     textAlign: "center",
+	marginHorizontal: 20,
   },
   successText: {
     fontSize: 18,
     color: "green",
     textAlign: "center",
+	marginHorizontal: 20,
   },
 });

@@ -7,7 +7,9 @@ export default function HomeScreen({ navigation }) { // Add navigation prop
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Profiles</Text>
           <TouchableOpacity>
-            <Text style={styles.logout}>Logout</Text>
+            <Text style={styles.logout}
+            onPress={() => navigation.navigate('Login')} 
+            >Logout</Text>
           </TouchableOpacity>
         </View>
   
