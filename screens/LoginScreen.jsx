@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
 
@@ -13,6 +13,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Image style={{postion: "absolute", top: -70,}}source={require("../app/logo.png")}/>
       <TouchableOpacity style={styles.loginButton} onPress={login}>
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>

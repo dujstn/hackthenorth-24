@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import { ActivityIndicator, IconButton } from 'react-native-paper';
 import NfcManager, { Ndef, NfcTech } from 'react-native-nfc-manager';
 import { urlToken } from '../../screens/NewProfileScreen';
+import { StatusBar } from 'expo-status-bar';
 
 export default function SharingScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -89,8 +90,10 @@ export default function SharingScreen({ navigation }) {
       {loading ? (
         <View style={styles.spinnerContainer}>
 		<Image source={require('../../app/circle.png')} style={styles.overlayImage} />
-		<ActivityIndicator animating={true} size={150} color="#5D8B6A" />
-		<Text style={{...styles.statusText, marginTop: 100}}>Sharing Profile 1...</Text>
+		<View style={styles.ActivityIndicator}>
+      <ActivityIndicator  animating={true} size={150} color="#5D8B6A" />
+    </View>
+		<Text style={{...styles.statusText, marginTop: 350}}>Sharing Profile 1...</Text>
 	  </View>
       ) : (
         error ? (
@@ -103,6 +106,7 @@ export default function SharingScreen({ navigation }) {
 			</View>
 		  )
       )}
+      <StatusBar theme="dark" />
     </View>
   );
 }
@@ -160,5 +164,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#DDCECC", 
 	marginHorizontal: 40,
+  },
+  ActivityIndicator:{
+    position: "absolute",
   }
 });
