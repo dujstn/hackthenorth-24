@@ -52,6 +52,7 @@ export default function SharingScreen({ navigation }) {
   async function writeNdef() {
     // const url = await getUrl();
 	const url = urlToken[0];
+	urlToken.pop();
 	console.log(url)
     let success = false;
     try {
