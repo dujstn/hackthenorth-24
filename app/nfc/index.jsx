@@ -22,7 +22,7 @@ export default function SharingScreen({ navigation }) {
   }, []);
 
   async function getUrl() {
-    return "https://duckduckgo.com";
+    return "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 	// Replace with actual profile URL
   }
 
@@ -57,7 +57,7 @@ export default function SharingScreen({ navigation }) {
       <IconButton 
         icon="close" 
         size={24} 
-        onPress={() => navigation.goBack()} 
+        onPress={() => { NfcManager.cancelTechnologyRequest(); navigation.goBack() }} 
         style={styles.closeButton}
       />
 
