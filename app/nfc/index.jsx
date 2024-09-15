@@ -22,12 +22,35 @@ export default function SharingScreen({ navigation }) {
   }, []);
 
   async function getUrl() {
-    return "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-	// Replace with actual profile URL
+	const params = {
+		name: "John Doe",
+		phone: "111-222-3333",
+		email: "abc@abc.com"
+	};
+	console.log("here")
+	try {
+		const res = await fetch("https://jisecay129.pythonanywhere.com/create", {
+			headers: {
+				"Content-Type": "application/json",
+			},
+			method: "POST",
+			body: JSON.stringify(params),
+		});
+		console.log("Status", res.status);
+		const url = `https://jisecay129.pythonanywhere.com/${await res.text()}`;
+
+		const res2 = await fetch(`https://ulvis.net/api.php?url=${url}`);
+		const finalUrl = await res2.text();
+		return finalUrl;
+	} catch (e) {
+		console.warn("Failed to get URL", e);
+		setError("Failed to generate profile URL. Please try again.");
+	}
   }
 
   async function writeNdef() {
     const url = await getUrl();
+	console.log(url)
     let success = false;
     try {
       const tech = await NfcManager.requestTechnology(NfcTech.Ndef);
@@ -43,7 +66,7 @@ export default function SharingScreen({ navigation }) {
         throw new Error('Failed to encode NDEF (0 bytes)');
       }
     } catch (e) {
-      console.warn('An error occurred!', e);
+      console.warn('An error occurred!', { e });
       setError("Failed to write NFC tag. Please try again.");
     } finally {
       await NfcManager.cancelTechnologyRequest();
