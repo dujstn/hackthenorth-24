@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { ActivityIndicator, IconButton } from 'react-native-paper';
 import NfcManager, { Ndef, NfcTech } from 'react-native-nfc-manager';
 
@@ -86,15 +86,20 @@ export default function SharingScreen({ navigation }) {
 
       {loading ? (
         <View style={styles.spinnerContainer}>
-		<ActivityIndicator animating={true} size={150} color="#7BAF9A" />
-		<Text style={{...styles.statusText, marginTop: 20}}>Sharing Profile 1...</Text>
+		<ActivityIndicator animating={true} size={150} color="#5D8B6A" />
+		<Image source={require('../../app/circle.png')} style={styles.overlayImage} />
+		<Text style={{...styles.statusText, marginTop: 50}}>Sharing Profile 1...</Text>
 	  </View>
       ) : (
         error ? (
-          <Text style={styles.errorText}>{error}</Text>
-        ) : (
-          <Text style={styles.successText}>NFC Tag Written Successfully!</Text>
-        )
+			<View style={styles.errorBox}>
+			  <Text style={styles.errorText}>{error}</Text>
+			</View>
+		  ) : (
+			<View style={styles.successBox}>
+			  <Text style={styles.successText}>Card written successfully!</Text>
+			</View>
+		  )
       )}
     </View>
   );
@@ -117,21 +122,42 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 40,
   },
+  overlayImage: {
+	position: 'absolute',
+	width: 220, 
+	height: 220, 
+  },
   statusText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#000",
+    color: "#5D8B6A",
   },
   errorText: {
     fontSize: 18,
-    color: "red",
+    color: "#570B01",
     textAlign: "center",
-	marginHorizontal: 20,
   },
   successText: {
     fontSize: 18,
     color: "green",
     textAlign: "center",
-	marginHorizontal: 20,
   },
+  successBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: "#d9e7d6", 
+	marginHorizontal: 40,
+  },
+  errorBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: "#DDCECC", 
+	marginHorizontal: 40,
+  }
 });

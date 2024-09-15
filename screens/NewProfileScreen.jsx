@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, Button } from 'react-native';
+import { StyleSheet, View, ScrollView, Button, TouchableOpacity } from 'react-native';
 import { Text, TextInput, IconButton } from 'react-native-paper';
 
 export default function ProfileScreen({ navigation }) {
@@ -79,7 +79,9 @@ export default function ProfileScreen({ navigation }) {
         <TextInput label="Facebook" mode="outlined" style={styles.input} value={facebook} onChangeText={setFacebook} />
         <TextInput label="Twitter" mode="outlined" style={styles.input} value={twitter} onChangeText={setTwitter} />
 
-        <Button title="Submit" onPress={handleSubmit} />
+        <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
+        <Text style={styles.submitText}>Submit</Text>
+      </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -112,5 +114,18 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 20,
+  },
+  submit: {
+    backgroundColor: "#d9e7d6", // Light green color
+    paddingVertical: 15,
+    paddingHorizontal: 85,
+    borderRadius: 10,
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  submitText: {
+    color: "#2f4f2f", // Dark green color
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

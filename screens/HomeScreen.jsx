@@ -4,6 +4,7 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 export default function HomeScreen({ navigation }) { // Add navigation prop
     return (
       <View style={styles.container}>
+        <View style={{ height: 10 }} />
         <View style={styles.headerContainer}>
           <Text style={styles.header}>Profiles</Text>
           <TouchableOpacity>
@@ -12,7 +13,7 @@ export default function HomeScreen({ navigation }) { // Add navigation prop
             >Logout</Text>
           </TouchableOpacity>
         </View>
-  
+        <View style={{ height: 15 }} />
         <TouchableOpacity 
           style={styles.createProfileContainer}
           onPress={() => navigation.navigate('NewProfile')} // Add navigation to NewProfileScreen
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   logout: {
-    fontSize: 16,
+    fontSize: 18,
     color: "gray",
   },
   createProfileContainer: {
