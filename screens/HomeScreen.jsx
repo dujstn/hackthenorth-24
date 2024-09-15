@@ -1,20 +1,23 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Profiles</Text>
-        <TouchableOpacity>
-          <Text style={styles.logout}>Logout</Text>
+export default function HomeScreen({ navigation }) { // Add navigation prop
+    return (
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Profiles</Text>
+          <TouchableOpacity>
+            <Text style={styles.logout}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+  
+        <TouchableOpacity 
+          style={styles.createProfileContainer}
+          onPress={() => navigation.navigate('NewProfile')} // Add navigation to NewProfileScreen
+        >
+          <AntDesign name="plus" size={24} color="gray" />
+          <Text style={styles.createProfileText}>Create Profile</Text>
         </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={styles.createProfileContainer}>
-        <AntDesign name="plus" size={24} color="gray" />
-        <Text style={styles.createProfileText}>Create Profile</Text>
-      </TouchableOpacity>
 
       <View style={styles.profileContainer}>
         <Text style={styles.profileText}>Profile 1</Text>

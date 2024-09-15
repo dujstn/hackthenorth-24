@@ -10,3 +10,7 @@
 //         </Drawer>
 //     );
 // }
+
+// Hide top bar
+// import { Drawer } from "expo-router/drawer";
+
