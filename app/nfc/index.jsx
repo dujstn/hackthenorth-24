@@ -88,9 +88,9 @@ export default function SharingScreen({ navigation }) {
 
       {loading ? (
         <View style={styles.spinnerContainer}>
-		<ActivityIndicator animating={true} size={150} color="#5D8B6A" />
 		<Image source={require('../../app/circle.png')} style={styles.overlayImage} />
-		<Text style={{...styles.statusText, marginTop: 50}}>Sharing Profile 1...</Text>
+		<ActivityIndicator animating={true} size={150} color="#5D8B6A" />
+		<Text style={{...styles.statusText, marginTop: 100}}>Sharing Profile 1...</Text>
 	  </View>
       ) : (
         error ? (
@@ -122,12 +122,11 @@ const styles = StyleSheet.create({
   spinnerContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 40,
   },
   overlayImage: {
 	position: 'absolute',
-	width: 220, 
-	height: 220, 
+	width: 200, 
+	height: 200, 
   },
   statusText: {
     fontSize: 20,
