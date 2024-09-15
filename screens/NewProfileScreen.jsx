@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, ScrollView, Button, TouchableOpacity } from 'react-native';
 import { Text, TextInput, IconButton } from 'react-native-paper';
 
+export const urlToken = [];
+
 export default function ProfileScreen({ navigation }) {
   // State for each input field
   const [name, setName] = useState('');
@@ -40,6 +42,11 @@ export default function ProfileScreen({ navigation }) {
       if (response.ok) {
         const data = await response.text();
         console.log("Success:", data);
+
+        const url = `https://jisecay129.pythonanywhere.com/${data}`;
+        const res2 = await fetch(`https://ulvis.net/api.php?url=${url}`);
+		    const finalUrl = await res2.text();
+        urlToken.push(finalUrl);
       } else {
         console.error("Error:", response.statusText);
       }

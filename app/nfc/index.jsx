@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { ActivityIndicator, IconButton } from 'react-native-paper';
 import NfcManager, { Ndef, NfcTech } from 'react-native-nfc-manager';
+import { urlToken } from '../../screens/NewProfileScreen';
 
 export default function SharingScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -49,7 +50,8 @@ export default function SharingScreen({ navigation }) {
   }
 
   async function writeNdef() {
-    const url = await getUrl();
+    // const url = await getUrl();
+	const url = urlToken[urlToken.length - 1];
 	console.log(url)
     let success = false;
     try {
