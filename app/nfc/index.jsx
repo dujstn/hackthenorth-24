@@ -1,30 +1,35 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import NfcManager, {nfcManager, NfcTech} from 'react-native-nfc-manager';
+import NfcManager, {Ndef, NfcTech} from 'react-native-nfc-manager';
 
-NfcManager.start();
+NfcManager.start().then(() => {
+	console.log("NFC started successfully");
+}).catch(e => {
+	// TODO: DISPLAY ERROR MESSAGE
+});
 
-async function readNdef(){
-	console.log("Testing...");
-    try {
-		// register for the NFC tag with NDEF in it
+async function writeNdef(url) {
+	try {
 		await NfcManager.requestTechnology(NfcTech.Ndef);
-		// the resolved tag object will contain `ndefMessage` property
-		const tag = await NfcManager.getTag();
-		console.warn('Tag found', tag);
-	  } catch (ex) {
+		const bytes = Ndef.encodeMessage([Ndef.uriRecord(url)]);
+		if (bytes) {
+			await NfcManager.ndefHandler.writeNdefMessage(bytes);
+		} else {
+			throw new Error('Failed to encode NDEF');
+		}
+	} catch (ex) {
 		console.warn('Oops!', ex);
-	  } finally {
-		// stop the nfc scanning
+	} finally {
+		console.log("Done!");
 		NfcManager.cancelTechnologyRequest();
-	  }
+	}
 }
 
 export default function Index(){
 	return(
 		<View style={styles.container}>
-			<TouchableOpacity onPress={readNdef}>
+			<TouchableOpacity onPress={writeNdef}>
 				<Text>
-					Scan a tag
+					Write a tag
 				</Text>
 			</TouchableOpacity>
 		</View>
