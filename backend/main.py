@@ -10,15 +10,16 @@ mapping: dict[str, dict[str, str]] = {}
 
 @app.route("/create", methods=["POST"])
 def create():
-	name = request.form["name"] if "name" in request.form else ""
-	phone = request.form["phone"] if "phone" in request.form else ""
-	email = request.form["email"] if "email" in request.form else ""
-	description = request.form["description"] if "description" in request.form else ""
-	linkedin = request.form["linkedin"] if "linkedin" in request.form else ""
-	instagram = request.form["instagram"] if "instagram" in request.form else ""
-	github = request.form["github"] if "github" in request.form else ""
-	facebook = request.form["facebook"] if "facebook" in request.form else ""
-	twitter = request.form["twitter"] if "twitter" in request.form else ""
+	data = request.get_json()
+	name = data["name"] if "name" in data else ""
+	phone = data["phone"] if "phone" in data else ""
+	email = data["email"] if "email" in data else ""
+	description = data["description"] if "description" in data else ""
+	linkedin = data["linkedin"] if "linkedin" in data else ""
+	instagram = data["instagram"] if "instagram" in data else ""
+	github = data["github"] if "github" in data else ""
+	facebook = data["facebook"] if "facebook" in data else ""
+	twitter = data["twitter"] if "twitter" in data else ""
 
 	user = {
 		"name": name,
