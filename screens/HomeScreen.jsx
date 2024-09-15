@@ -81,10 +81,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#d9e7d6", // Light green for Profile 1
     marginBottom: 20,
+    height: 80,
   },
   profileText: {
     fontSize: 18,
-    fontWeight: "bold",
     color: "#2f4f2f", // Green text for Profile 1
   },
   profileContainer2: {
@@ -95,10 +95,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#DDCECC", // Light red for Profile 2
     marginBottom: 20,
+    height: 80,
   },
   profileText2: {
     fontSize: 18,
-    fontWeight: "bold",
     color: "#570B01", // Red text for Profile 2
   },
 });
